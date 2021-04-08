@@ -4,9 +4,24 @@
 　・タブで表示する
 　・サポートするステータスは「すべて」「未完了」「完了済み」
 */
-function Filter(  ) {
+function Filter( props ) {
   return (
-    <div className="panel-tabs">
+    <div className="panel-tabs" stype={{display:'flex'}}>
+      <button 
+        type="button" 
+        className="button"
+        onClick={()=>{props.onFilterTodo(0)}}
+      >全て</button>
+      <button 
+        type="button" 
+        className="button"
+        onClick={()=>{props.onFilterTodo(-1)}}  
+      >未完了</button>
+      <button 
+        type="button" 
+        className="button"
+        onClick={()=>{props.onFilterTodo(1)}}
+      >完了済み</button>
     </div>
   );
 }

@@ -27,6 +27,10 @@ function Todo() {
     /* テストコード 終了 */
   ]);
   
+  const [filter, setFilter] = useState(0);
+  
+  let itemRender = items;
+  
   const onChangeStatus = (key) => {
     
     const index = items.findIndex((item) => item.key === key);
@@ -47,6 +51,26 @@ function Todo() {
     
     putItems([...items]);
   }
+  
+  const filterTodo = (filter) => {
+    setFilter(filter);
+  }
+  
+  switch (filter) {
+    case 1:
+      // code
+      itemRender = items.filter((item)=>{
+        return item.done === true;
+      })
+      break;
+    case -1:
+      itemRender = items.filter((item)=>{
+        return item.done === false;
+      })
+      break;
+    default:
+      // code
+  }
 
   return (
     <div className="panel">
@@ -56,7 +80,11 @@ function Todo() {
       <Input 
         onAddTodo={addTodo}
       />
-      {items.map(item => (
+      
+      <Filter
+        onFilterTodo={filterTodo}
+      />
+      {itemRender.map(item => (
         <TodoItem 
           key={item.key} 
           item={item} 
