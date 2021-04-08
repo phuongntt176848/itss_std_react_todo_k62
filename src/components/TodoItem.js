@@ -15,7 +15,11 @@ function TodoItem( props ) {
     <label 
       className={`panel-block ${classChange}`}
     >
-        <input type="checkbox" onClick={()=>{changeStatus(item.key)}} />
+        <input 
+          type="checkbox" 
+          onClick={()=>{changeStatus(item.key)}} 
+          defaultChecked={item.done}
+        />
         {item.text}
     </label>
   );

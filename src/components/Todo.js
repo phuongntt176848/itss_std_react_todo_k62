@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import TodoItem from './TodoItem';
 import Input from './Input';
 import Filter from './Filter';
+import ClearButton from './ClearButton';
 
 /* カスタムフック */
 import useStorage from '../hooks/storage';
@@ -18,14 +19,10 @@ import useStorage from '../hooks/storage';
 /* ライブラリ */
 import {getKey} from "../lib/util";
 
+/**/
+
 function Todo() {
-  const [items, putItems] = useState([
-      /* テストコード 開始 */
-    { key: getKey(1), text: '日本語の宿題', done: false },
-    { key: getKey(2), text: 'reactを勉強する', done: false },
-    { key: getKey(3), text: '明日の準備をする', done: false },
-    /* テストコード 終了 */
-  ]);
+  const [items, putItems, clearItems] = useStorage();
   
   const [filter, setFilter] = useState(0);
   
@@ -38,6 +35,10 @@ function Todo() {
       items[index] = {...items[index], done: !items[index].done}
       putItems([...items])
     }
+  }
+  
+  const clearTodos = () => {
+    clearItems();
   }
   
   const addTodo = (todo) => {
@@ -84,7 +85,7 @@ function Todo() {
       <Filter
         onFilterTodo={filterTodo}
       />
-      {itemRender.map(item => (
+      {itemRender&&itemRender.map(item => (
         <TodoItem 
           key={item.key} 
           item={item} 
@@ -93,8 +94,12 @@ function Todo() {
         />
       ))}
       <div className="panel-block">
-        {items.length} items
+        {itemRender&& `${itemRender.length} items`}
       </div>
+      
+      <ClearButton 
+        onClearTodos={clearTodos}
+      />
     </div>
   );
 }
