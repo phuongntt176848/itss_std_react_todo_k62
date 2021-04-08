@@ -1,1 +1,1 @@
-export const getKey = () => Math.random().toString(32).substring(2);
+export const getKey = (id) => `${id}${Math.random().toString(32).substring(2)}${Math.random().toString(32).substring(2)}`;

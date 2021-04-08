@@ -4,9 +4,20 @@
 　・チェックボックスにチェックが入っているか管理する
 　・チェックボックスにチェックが入っているかアイテムをグレーアウトする
 */
-function TodoItem(  ) {
+function TodoItem( props ) {
+  const {item, classChange} = props;
+  
+  const changeStatus = (key) => {
+    props.changeStatus(key);
+  }
+  
   return (
-    <label className="panel-block">
+    <label 
+      className={`panel-block ${classChange}`}
+      onClick={()=>{changeStatus(item.key)}}
+    >
+        <input type="checkbox" />
+        {item.text}
     </label>
   );
 }
