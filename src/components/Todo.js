@@ -19,23 +19,35 @@ import useStorage from '../hooks/storage';
 import {getKey} from "../lib/util";
 
 function Todo() {
-  const [items, putItems] = React.useState([
+  const [items, putItems] = useState([
       /* テストコード 開始 */
-    { key: getKey(), text: '日本語の宿題', done: false },
-    { key: getKey(), text: 'reactを勉強する', done: false },
-    { key: getKey(), text: '明日の準備をする', done: false },
+    { key: getKey(1), text: '日本語の宿題', done: false },
+    { key: getKey(2), text: 'reactを勉強する', done: false },
+    { key: getKey(3), text: '明日の準備をする', done: false },
     /* テストコード 終了 */
   ]);
+  
+  const onChangeStatus = (key) => {
+    
+    const index = items.findIndex((item) => item.key === key);
+    if (index !== -1) {
+      items[index] = {...items[index], done: !items[index].done}
+      putItems([...items])
+    }
+  }
 
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
+      <Input />
       {items.map(item => (
-        < TodoItem
-          key={item.key}
-          item={item}
+        <TodoItem 
+          key={item.key} 
+          item={item} 
+          changeStatus={onChangeStatus} 
+          classChange={item.done?'has-text-grey-light':''}
         />
       ))}
       <div className="panel-block">
