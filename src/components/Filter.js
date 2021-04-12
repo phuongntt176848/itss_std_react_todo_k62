@@ -7,11 +7,11 @@
 function Filter(  props ) {
   return (
     <div className="panel-tabs" stype = {{display: 'flex'}}>
-     <a 
+     <button 
         type="button" 
         className="button"
         onClick={()=>{props.onFilterTodo(0)}}
-      >全て</a>
+      >全て</button>
       <button 
         type="button" 
         className="button"
