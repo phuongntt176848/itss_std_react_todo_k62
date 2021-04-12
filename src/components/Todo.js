@@ -92,7 +92,7 @@ function Todo() {
         />
       ))}
       <div className="panel-block">
-        {items.length} items
+        {itemRender.length} items
       </div>
     </div>
   );

@@ -2,8 +2,11 @@
 .button {
     height: 40px !important;
     width:  80px !important;
-    background-color: blue;
-    color: white;
+    background-color: white;
+    color: blue;
+    border: none;
+    margin-right: 10px
+    
 }
 
 .container {
