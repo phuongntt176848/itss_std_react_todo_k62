@@ -17,7 +17,7 @@ function TodoItem( props ) {
     >
         <input 
           type="checkbox" 
-          onClick={()=>{changeStatus(item.key)}} 
+          onClick={()=>{changeStatus(item.id)}} 
           defaultChecked={item.done}
         />
         {item.text}

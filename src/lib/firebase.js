@@ -11,6 +11,71 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const database = firebase.firestore();
+
+export const getTodos = async () => {
+  try {
+    
+    const items = await database.collection('todos').get();
+    
+    const todos = items.docs.map(
+     (doc) => ({...doc.data(), id: doc.id})
+     );
+    
+    return todos;
+    
+  } catch(error) {
+    console.log(error);
+    
+    return [];
+  }
+  
+}
+
+export const addTodo = async (item) => {
+  
+  try {
+    
+    const ref = database.collection('todos');
+    await ref.add(item);
+    
+  } catch(error) {
+    console.log(error);
+    return;
+  }
+  
+}
+
+export const updateTodo = async (item) => {
+  
+  try {
+    
+    const ref = database.collection('todos').doc(item.id);
+    await ref.update(item);
+    
+  } catch(error) {
+    console.log(error);
+  }
+  
+}
+
+export const removeTodo = async (item) => {
+  
+  try {
+    console.log(item);
+    const ref = database.collection('todos').doc(item.id);
+    await ref.delete().then(() => {
+      console.log('');
+    }).catch((error)=>{
+      console.log(error);
+    });
+    
+  } catch(error) {
+    console.log(error);
+  }
+  
+}
+
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
 // <script src="/__/firebase/8.6.1/firebase-app.js"></script>
 

@@ -14,26 +14,23 @@ import Filter from './Filter';
 import ClearButton from './ClearButton';
 
 /* カスタムフック */
-import useStorage from '../hooks/storage';
-
-/* ライブラリ */
-import {getKey} from "../lib/util";
+import useFirebase from '../hooks/useFirebase';
 
 /**/
 
 function Todo() {
-  const [items, putItems, clearItems] = useStorage();
+  const [items, putItems, clearItems, updateItem ] = useFirebase();
   
   const [filter, setFilter] = useState(0);
   
-  let itemRender = items;
+  let itemRender = items || [];
   
   const onChangeStatus = (key) => {
     
-    const index = items.findIndex((item) => item.key === key);
+    const index = items.findIndex((item) => item.id === key);
     if (index !== -1) {
       items[index] = {...items[index], done: !items[index].done}
-      putItems([...items])
+      updateItem(items[index]);
     }
   }
   
@@ -43,14 +40,11 @@ function Todo() {
   
   const addTodo = (todo) => {
     const item = {
-      key: getKey(4),
       text:todo,
       done: false
     };
     
-    items.push(item);
-    
-    putItems([...items]);
+    putItems(item);
   }
   
   const filterTodo = (filter) => {
@@ -72,7 +66,7 @@ function Todo() {
     default:
       // code
   }
-
+  
   return (
     <div className="panel">
       <div className="panel-heading">
@@ -87,7 +81,7 @@ function Todo() {
       />
       {itemRender&&itemRender.map(item => (
         <TodoItem 
-          key={item.key} 
+          key={item.id} 
           item={item} 
           changeStatus={onChangeStatus} 
           classChange={item.done?'has-text-grey-light':''}
