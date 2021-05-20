@@ -2,9 +2,13 @@
 
 .button {
     height: 40px !important;
-    width:  80px !important;
     background-color: blue;
     color: white;
+}
+
+.is-fullwidth{
+  margin-left: 70px !important;
+  margin-right: 70px !important;
 }
 
 .container {
