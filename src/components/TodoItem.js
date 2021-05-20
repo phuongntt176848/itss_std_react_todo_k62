@@ -14,9 +14,8 @@ function TodoItem( props ) {
   return (
     <label 
       className={`panel-block ${classChange}`}
-      onClick={()=>{changeStatus(item.key)}}
     >
-        <input type="checkbox" />
+        <input type="checkbox" onClick={()=>{changeStatus(item.key)}} />
         {item.text}
     </label>
   );

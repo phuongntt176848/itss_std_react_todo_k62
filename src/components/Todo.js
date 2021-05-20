@@ -27,6 +27,10 @@ function Todo() {
     /* テストコード 終了 */
   ]);
   
+  const [filter, setFilter] = useState(0);
+  
+  let itemRender = items;
+  
   const onChangeStatus = (key) => {
     
     const index = items.findIndex((item) => item.key === key);
@@ -35,13 +39,52 @@ function Todo() {
       putItems([...items])
     }
   }
+  
+  const addTodo = (todo) => {
+    const item = {
+      key: getKey(4),
+      text:todo,
+      done: false
+    };
+    
+    items.push(item);
+    
+    putItems([...items]);
+  }
+  
+  const filterTodo = (filter) => {
+    setFilter(filter);
+  }
+  
+  switch (filter) {
+    case 1:
+      // code
+      itemRender = items.filter((item)=>{
+        return item.done === true;
+      })
+      break;
+    case -1:
+      itemRender = items.filter((item)=>{
+        return item.done === false;
+      })
+      break;
+    default:
+      // code
+  }
 
   return (
     <div className="panel">
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
-      {items.map(item => (
+      <Input 
+        onAddTodo={addTodo}
+      />
+      
+      <Filter
+        onFilterTodo={filterTodo}
+      />
+      {itemRender.map(item => (
         <TodoItem 
           key={item.key} 
           item={item} 
