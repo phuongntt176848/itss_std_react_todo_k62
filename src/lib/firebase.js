@@ -12,6 +12,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const database = firebase.firestore();
+export const db_user = firebase.firestore().collection("user");
+export const auth = firebase.auth();
+export default firebase;
 
 export const getTodos = async () => {
   try {
@@ -75,6 +78,17 @@ export const removeTodo = async (item) => {
   }
   
 }
+
+export const uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: 'popup',
+    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
+    signInSuccessUrl: '/',
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    ],
+};
 
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
 // <script src="/__/firebase/8.6.1/firebase-app.js"></script>

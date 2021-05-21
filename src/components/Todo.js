@@ -12,6 +12,7 @@ import TodoItem from './TodoItem';
 import Input from './Input';
 import Filter from './Filter';
 import ClearButton from './ClearButton';
+import Auth from "./Auth";
 
 /* カスタムフック */
 import useFirebase from '../hooks/useFirebase';
@@ -69,6 +70,7 @@ function Todo() {
   
   return (
     <div className="panel">
+      <Auth />
       <div className="panel-heading">
         ITSS ToDoアプリ
       </div>
