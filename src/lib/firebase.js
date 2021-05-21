@@ -12,7 +12,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const database = firebase.firestore();
-export const db_user = firebase.firestore().collection("user");
+export const db_user = firebase.firestore().collection("users");
+export const storageImage = firebase.storage().ref();
 export const auth = firebase.auth();
 export default firebase;
 
@@ -80,23 +81,52 @@ export const removeTodo = async (item) => {
 }
 
 export const uiConfig = {
-    // Popup signin flow rather than redirect flow.
-    signInFlow: 'popup',
-    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-    signInSuccessUrl: '/',
-    // We will display Google and Facebook as auth providers.
-    signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    ],
-};
+  signInFlow: 'popup',
+  signInSuccessUrl: "/",
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+  ],
+}
 
-// <!-- The core Firebase JS SDK is always required and must be listed first -->
-// <script src="/__/firebase/8.6.1/firebase-app.js"></script>
+export const storeUserInfo = async (user) => {
+  const { uid } = user;
+  const userDoc = await database.collection("users").doc(uid).get();
+  if (!userDoc.exists) {
+    await database.collection("users").doc(uid).set({ name: user.displayName });
+    return {
+      name: user.displayName,
+      id: uid,
+    };
+  } else {
+    return {
+      id: uid,
+      ...userDoc.data(),
+    };
+  }
+}
 
-// <!-- TODO: Add SDKs for Firebase products that you want to use
-//      https://firebase.google.com/docs/web/setup#available-libraries -->
+export const updateUser = async (user, image) => {
+  try {
+    const userDoc = await firebase.firestore().collection("users").doc(user.id).get();
+    if (userDoc.exists) {
+      await firebase.firestore().collection("users").doc(user.id).update({ ...userDoc.data(), image: image });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-// <!-- Initialize Firebase -->
-// <script src="/__/firebase/init.js"></script>
-
-// npm install -g firebase-tools
+export const uploadFile = async (image) => {
+  
+  const ref = storageImage.child(`/images/${image.name}`);
+  let downloadURL = "";
+  try {
+    
+    await ref.put(image);
+    downloadURL = await ref.getDownloadURL();
+    
+  } catch(error) {
+    console.log(error);
+  }
+  return downloadURL;
+}
