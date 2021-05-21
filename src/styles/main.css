@@ -1,4 +1,16 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.2/css/bulma.min.css');
+.button {
+    height: 40px !important;
+    background-color: white;
+    color: blue;
+    border: none;
+    margin-right: 10px
+    
+}
+.is-fullwidth{
+  margin-left: 30px !important;
+  margin-right: 30px !important;
+}
 
 .container {
   margin-top: 2rem;

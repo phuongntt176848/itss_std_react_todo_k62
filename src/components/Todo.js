@@ -11,6 +11,8 @@ import React, { useState } from 'react';
 import TodoItem from './TodoItem';
 import Input from './Input';
 import Filter from './Filter';
+import ClearButton from './ClearButton';
+
 
 /* カスタムフック */
 import useStorage from '../hooks/storage';
@@ -19,13 +21,11 @@ import useStorage from '../hooks/storage';
 import {getKey} from "../lib/util";
 
 function Todo() {
-  const [items, putItems] = useState([
-      /* テストコード 開始 */
-    { key: getKey(1), text: '日本語の宿題', done: false },
-    { key: getKey(2), text: 'reactを勉強する', done: false },
-    { key: getKey(3), text: '明日の準備をする', done: false },
-    /* テストコード 終了 */
-  ]);
+  const [items, putItems, clearItems] = useStorage([]);
+  
+  const [filter, setFilter] = useState(0);
+
+  let itemRender = items;
   
   const onChangeStatus = (key) => {
     
@@ -35,7 +35,9 @@ function Todo() {
       putItems([...items])
     }
   }
-  
+  const clearTodos = () => {
+    clearItems();
+  }
   const addTodo = (todo) => {
     const item = {
       key: getKey(4),
@@ -47,7 +49,27 @@ function Todo() {
     
     putItems([...items]);
   }
+ 
+ const filterTodo = (filter) => {
+    setFilter(filter);
+  }
 
+  switch (filter) {
+    case 1:
+      // code
+      itemRender = items.filter((item)=>{
+        return item.done === true;
+      })
+      break;
+    case -1:
+      itemRender = items.filter((item)=>{
+        return item.done === false;
+      })
+      break;
+    default:
+      // code
+  }
+  
   return (
     <div className="panel">
       <div className="panel-heading">
@@ -56,7 +78,10 @@ function Todo() {
       <Input 
         onAddTodo={addTodo}
       />
-      {items.map(item => (
+      <Filter
+        onFilterTodo={filterTodo}
+      />
+      {itemRender.map(item => (
         <TodoItem 
           key={item.key} 
           item={item} 
@@ -65,8 +90,11 @@ function Todo() {
         />
       ))}
       <div className="panel-block">
-        {items.length} items
+        {itemRender.length} items
       </div>
+       <ClearButton 
+        onClearTodos={clearTodos}
+      />
     </div>
   );
 }
